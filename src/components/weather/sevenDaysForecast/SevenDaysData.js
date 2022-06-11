@@ -21,7 +21,7 @@ const SevenDaysData = (props) => {
             </Box>
             {/* rank */}
             <Box sx={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
-                {fahrenheitToCelsius(props.daysData.temp.max)}/{fahrenheitToCelsius(props.daysData.temp.min)}
+                {Math.floor(props.daysData.temp.max)}/{Math.floor(props.daysData.temp.min)}
             </Box>
         </Stack>
     )

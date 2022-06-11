@@ -17,8 +17,15 @@ const HoursForeCast = (props) => {
         >
             <Typography variant="h4">24 Hours Forecast</Typography>
             {/* data display */}
-            <Box sx={{display:"flex",flexWrap:"wrap"}}>
-                {data.map((value)=><HoursForeCastData time={`${convertTimeStamp(value.dt)}`} temp={`${fahrenheitToCelsius(value.temp)}`} day={`${new Date(value.dt).toDateString().substring(0,3)}`} icon={`${getWeatherIcon(value.weather[0].id)}`} />)}
+            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                {data.map((value) => <HoursForeCastData
+                    key={value.dt}
+                    time={`${convertTimeStamp(value.dt)}`}
+                    temp={`${Math.floor(value.temp)}`}
+                    day={`${new Date(value.dt * 1000).toDateString().substring(0, 3)}`}
+                    icon={`${getWeatherIcon(value.weather[0].id)}`} />
+                )
+                }
             </Box>
         </Stack>
     )

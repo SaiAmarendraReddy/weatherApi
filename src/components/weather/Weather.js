@@ -57,7 +57,9 @@ const Weather = () => {
     // when user click refresh button
     // get the data from server
     const onRefreshHandler = () => {
-
+        setHoursOrSeven("")
+        getWeatherData()
+        getHourlyAndDaily()
     }
 
     return (
@@ -88,9 +90,9 @@ const Weather = () => {
                         {/* temperature details display */}
                         <DataDisplay
                             description={presentWeatherData.weather[0].description}
-                            temp={`${fahrenheitToCelsius(presentWeatherData.main.temp)}°C`}
+                            temp={`${Math.floor(presentWeatherData.main.temp)}°C`}
                             weatherID={presentWeatherData.weather[0].id}
-                            date={`${timeStampToDDM(new Date())}`}
+                            date={`${timeStampToDDM(presentWeatherData.dt)}`}
                         />
                         {/* temperature category */}
                         <Stack sx={{ flex: 1, marginTop: '2px' }} direction={"row"} >
@@ -98,7 +100,7 @@ const Weather = () => {
                             <Category
                                 icon={<ThermostatIcon />}
                                 title={"FEELS LIKE"}
-                                data={`${fahrenheitToCelsius(presentWeatherData.main.feels_like)}°C`}
+                                data={`${Math.floor(presentWeatherData.main.feels_like)}°C`}
                             />
                             {/* wind */}
                             <Category
@@ -121,9 +123,9 @@ const Weather = () => {
                     </Stack>}
 
                 {/* hoursforecast */}
-                {hoursOrSeven === constants.HOURS && <HoursForeCast data={hourlyData}/>}
+                {hoursOrSeven === constants.HOURS && <HoursForeCast data={hourlyData} />}
                 {/* sevenHoursForecast */}
-                {hoursOrSeven === constants.SEVEN && <SevenDaysForecast data={dailyData}/>}
+                {hoursOrSeven === constants.SEVEN && <SevenDaysForecast data={dailyData} />}
             </Stack>
         </Container>
     )

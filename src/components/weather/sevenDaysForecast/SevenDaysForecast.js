@@ -16,7 +16,7 @@ const SevenDaysForecast = (props) => {
             <Typography variant="h4">7 Days Forecast</Typography>
             {/* Data */}
             <Box sx={{ width: "90%" }}>
-                {props.data.map((value)=><SevenDaysData daysData={value}/>)}
+                {props.data.map((value)=><SevenDaysData key={value.dt} daysData={value}/>)}
             </Box>
         </Stack>
     )

@@ -5,7 +5,7 @@ export const APIKEY = "671ade2a8a1c9dad34dddd497500be31"
 
 export const getWeatherData = async () => {
     try {
-        const apiCall = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=14.1606175&lon=79.7775407&appid=${APIKEY}`)
+        const apiCall = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=14.1606175&lon=79.7775407&appid=${APIKEY}&units=metric`)
         const data = await apiCall.json()
         // console.log(data)
         store.dispatch(setCurrentWeather(data))
@@ -18,7 +18,7 @@ export const getWeatherData = async () => {
 // daily
 export const getHourlyAndDaily = async () => {
     try {
-        const apiCall = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=14.1606175&lon=79.7775407&appid=${APIKEY}`)
+        const apiCall = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=14.1606175&lon=79.7775407&appid=${APIKEY}&units=metric`)
         const data = await apiCall.json()
         // hourly
         console.log("hourly", data.hourly,data)
@@ -39,7 +39,7 @@ export const fahrenheitToCelsius = (fahrenheit) => {
 
 //convert timeStamp to hh:mm
 export const convertTimeStamp = (timeStamp) => {
-    return new Date(timeStamp).toString().substr(15, 6)
+    return new Date(timeStamp * 1000).toString().substr(15, 6)
 }
 
 // get weather icon
@@ -83,7 +83,7 @@ export const getWeatherIcon = (weatherID) => {
 // Convert timestamp to day,date, month
 export const timeStampToDDM = (timeStamp) => {
     const Days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    const tmp = new Date(timeStamp);
+    const tmp = new Date(timeStamp * 1000);
     // day
     let data = `${Days[tmp.getDay()]}, ${tmp.getDate()} ${tmp.toDateString().substring(3, 7)}`
 
