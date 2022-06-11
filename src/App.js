@@ -5,6 +5,7 @@ import Login from './components/login/Login';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import Signup from './components/signup/Signup';
 import Weather from './components/weather/Weather';
+import "weather-icons/css/weather-icons.css"
 
 function App() {
   return (

@@ -1,10 +1,13 @@
 import { Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { convertTimeStamp, fahrenheitToCelsius, getWeatherIcon } from "../../Common";
 import HoursForeCastData from "./HoursForecastDataDisplay";
 
 
-const HoursForeCast = () => {
+const HoursForeCast = (props) => {
+    const { data } = props;
+    console.log("props hours", data)
     return (
         <Stack
             justifyContent={"center"}
@@ -14,8 +17,8 @@ const HoursForeCast = () => {
         >
             <Typography variant="h4">24 Hours Forecast</Typography>
             {/* data display */}
-            <Box>
-                <HoursForeCastData time={"21:30"} temp={23} day={"sun"} />
+            <Box sx={{display:"flex",flexWrap:"wrap"}}>
+                {data.map((value)=><HoursForeCastData time={`${convertTimeStamp(value.dt)}`} temp={`${fahrenheitToCelsius(value.temp)}`} day={`${new Date(value.dt).toDateString().substring(0,3)}`} icon={`${getWeatherIcon(value.weather[0].id)}`} />)}
             </Box>
         </Stack>
     )

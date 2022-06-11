@@ -14,6 +14,7 @@ const HoursForeCastData = (props) => {
             width={"130px"}
             alignItems={"center"}
             justifyContent={"space-around"}
+            margin={"5px"}
         >
             {/* time */}
             <Typography sx={{ width: "inherit", textAlign: "center", borderBottom: "1px solid #363030" }} >{props.time}</Typography>
@@ -21,7 +22,8 @@ const HoursForeCastData = (props) => {
             <Box
                 sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-around" }}
             >
-                <CloudIcon />
+                {/* icon */}
+                <i className={`wi ${props.icon}`} ></i>
                 <Typography sx={{ marginTop: "5px" }}>{props.temp}&deg;</Typography>
             </Box>
             {/* day */}

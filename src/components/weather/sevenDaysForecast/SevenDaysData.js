@@ -2,8 +2,11 @@ import { Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import CloudIcon from '@mui/icons-material/Cloud';
+import { fahrenheitToCelsius, getWeatherIcon, timeStampToDDM } from "../../Common";
 
-const SevenDaysData = () => {
+const SevenDaysData = (props) => {
+
+    console.log("((((((((((((((( ", props.daysData)
     return (
         <Stack
             direction={"row"}
@@ -12,11 +15,14 @@ const SevenDaysData = () => {
         >
             {/* icon & date */}
             <Box sx={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <CloudIcon />
-                <Typography sx={{ marginLeft: "15px" }}>sunday 47</Typography>
+                {/* icon */}
+                <i className={`wi ${getWeatherIcon(props.daysData.weather[0].id)}`} ></i>
+                <Typography sx={{ marginLeft: "15px" }}>{timeStampToDDM(props.daysData.moonrise)}</Typography>
             </Box>
             {/* rank */}
-            <Box sx={{ display: 'flex', flex: 1, justifyContent: 'center' }}>rank</Box>
+            <Box sx={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
+                {fahrenheitToCelsius(props.daysData.temp.max)}/{fahrenheitToCelsius(props.daysData.temp.min)}
+            </Box>
         </Stack>
     )
 }

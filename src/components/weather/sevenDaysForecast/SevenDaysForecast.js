@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import SevenDaysData from "./SevenDaysData";
 
-const SevenDaysForecast = () => {
+const SevenDaysForecast = (props) => {
     return (
         <Stack
             marginTop={"10px"}
@@ -16,7 +16,7 @@ const SevenDaysForecast = () => {
             <Typography variant="h4">7 Days Forecast</Typography>
             {/* Data */}
             <Box sx={{ width: "90%" }}>
-                <SevenDaysData />
+                {props.data.map((value)=><SevenDaysData daysData={value}/>)}
             </Box>
         </Stack>
     )

@@ -1,8 +1,9 @@
 import React from "react"
 import { Stack, Typography } from "@mui/material"
 import CloudIcon from '@mui/icons-material/Cloud';
+import { getWeatherIcon } from "../Common";
 
-const DataDisplay = () => {
+const DataDisplay = (props) => {
 
     return (
         <Stack
@@ -13,13 +14,13 @@ const DataDisplay = () => {
             color={"white"}
         >
             {/* icon */}
-            <CloudIcon sx={{fontSize:"120px"}}/>
+            <i className={`wi ${getWeatherIcon(props.weatherID)}`} style={{ fontSize: "77px" }}></i>
             {/* name */}
-            <Typography variant="h4">ugam</Typography>
+            <Typography variant="h4">{props.description}</Typography>
             {/* day,data month */}
-            <Typography variant="subtitle1">sunday, 27 FEB</Typography>
+            <Typography variant="subtitle1">{props.date}</Typography>
             {/* temperature */}
-            <Typography variant="h1">27&deg;</Typography>
+            <Typography variant="h1">{props.temp}</Typography>
         </Stack>
     )
 
