@@ -5,7 +5,8 @@ const initialValues = {
     daily: [],
     hourly: [],
     current: null,
-    weatherCompentRender: false
+    weatherCompentRender: false,
+    coordinates: null
 }
 
 export const weatherReducer = createSlice({
@@ -23,10 +24,14 @@ export const weatherReducer = createSlice({
         },
         setWeatherComponent: (state, action) => {
             state.weatherCompentRender = action.payload
+        },
+        setCoordinates: (state, action) => {
+            console.log("coordinates in store ", action.payload)
+            state.coordinates = action.payload
         }
     }
 })
 
-export const { setCurrentWeather, setHourslyAndDaily, setWeatherComponent } = weatherReducer.actions
+export const { setCurrentWeather, setHourslyAndDaily, setWeatherComponent, setCoordinates } = weatherReducer.actions
 
 export default weatherReducer.reducer

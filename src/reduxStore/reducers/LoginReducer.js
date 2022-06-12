@@ -32,7 +32,7 @@ export const loginReducer = createSlice({
             state.isUserLogin = action.payload
             // store data in localstore
             // isUserLogin: state.isUserLogin,
-            window.localStorage.setItem(keys.loggedKey,JSON.stringify({isUserLogin: state.isUserLogin }))
+            window.localStorage.setItem(keys.loggedKey, JSON.stringify({ isUserLogin: state.isUserLogin }))
         },
         // store the user data
         setUserData: (state, action) => {
@@ -64,6 +64,18 @@ export const loginReducer = createSlice({
         clearStorage: (state, action) => {
             window.localStorage.removeItem(keys.detailsKey)
             window.localStorage.removeItem(keys.loggedKey)
+            state.isUserLogin = false
+            state.userData = {
+                firstName: "",
+                lastName: "",
+                fullName: "",
+                email: "",
+                password: "",
+                gender: "",
+                dob: "",
+                country: "",
+                age: 0
+            }
         }
     }
 })

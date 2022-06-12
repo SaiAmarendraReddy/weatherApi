@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux'
 import { keys, setIsUserLogin, setUserData } from "../../reduxStore/reducers/LoginReducer";
 import { useSelector } from 'react-redux'
-import { getDataFromLocalStorage } from "../Common";
+import { getCoordinates, getDataFromLocalStorage } from "../Common";
 
 const Login = () => {
     const
@@ -24,6 +24,7 @@ const Login = () => {
     // check data is present in store or not
     useEffect(() => {
         getDataFromLocalStorage(navigate)
+        getCoordinates()
     }, [])
 
     useEffect(() => {

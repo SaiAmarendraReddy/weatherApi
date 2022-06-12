@@ -1,12 +1,57 @@
 import { keys, setIsUserLogin, setUserData } from "../reduxStore/reducers/LoginReducer"
-import { setCurrentWeather, setHourslyAndDaily } from "../reduxStore/reducers/WeatherReducer"
+import { setCoordinates, setCurrentWeather, setHourslyAndDaily } from "../reduxStore/reducers/WeatherReducer"
 import { store } from "../reduxStore/Store"
 
 export const APIKEY = "671ade2a8a1c9dad34dddd497500be31"
+export const BASE_URL = "https://api.openweathermap.org/data/2.5"
+
+export const getCoordinates = () => {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition((position) => {
+
+            const data = { lat: position.coords.latitude, lon: position.coords.longitude }
+            store.dispatch(setCoordinates(data))
+        },
+            (error) => {
+                console.log(error)
+            })
+
+        let id = navigator.geolocation.watchPosition((position) => {
+            const data = { lat: position.coords.latitude, lon: position.coords.longitude }
+            store.dispatch(setCoordinates(data))
+        })
+    }
+    else {
+        console.log("no geloaction")
+    }
+}
+
+// url
+const getUrl = (type) => {
+    const coordinates = store.getState().weatherStore.coordinates
+    const country = store.getState().loginStore.userData.country
+    let url;
+
+    if (coordinates !== null) {
+        url = `${BASE_URL}/${type}?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${APIKEY}&units=metric`
+    }
+    else {
+        if (type == "weather")
+            url = `${BASE_URL}/${type}?q=${country}&appid=${APIKEY}&units=metric`
+        else {
+            const { coord } = store.getState().weatherStore.current
+            // console.log((coord != null | coord != undefined),"----------------")
+            url = `${BASE_URL}/${type}?lat=${coord.lat}&lon=${coord.lon}&appid=${APIKEY}&units=metric`
+        }
+
+    }
+    return url;
+}
 
 export const getWeatherData = async () => {
+    const url = getUrl("weather");
     try {
-        const apiCall = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=14.1606175&lon=79.7775407&appid=${APIKEY}&units=metric`)
+        const apiCall = await fetch(url)
         const data = await apiCall.json()
         // console.log(data)
         store.dispatch(setCurrentWeather(data))
@@ -18,8 +63,9 @@ export const getWeatherData = async () => {
 // hourly
 // daily
 export const getHourlyAndDaily = async () => {
+    const url = getUrl("onecall");
     try {
-        const apiCall = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=14.1606175&lon=79.7775407&appid=${APIKEY}&units=metric`)
+        const apiCall = await fetch(url)
         const data = await apiCall.json()
         // hourly
         console.log("hourly", data.hourly, data)
@@ -101,7 +147,7 @@ export const getDataFromLocalStorage = (navigate) => {
         store.dispatch(setIsUserLogin(userlog.isUserLogin))
         navigate("/home")
     }
-    if(user !== null) {
+    if (user !== null) {
         const usrdetails = JSON.parse(user)
         store.dispatch(setUserData(usrdetails.userData))
     }

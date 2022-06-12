@@ -55,6 +55,7 @@ const Weather = () => {
             setHoursOrSeven(constants.SEVEN)
         else if (type == constants.HOURS)
             setHoursOrSeven(constants.HOURS)
+        getHourlyAndDaily()
     }
 
     // when user click refresh button
