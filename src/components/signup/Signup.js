@@ -69,7 +69,6 @@ const Signup = () => {
     }
 
     // all fields should present
-
     // when user click login or signup button
     // navigate to login screen
     const onSignup = () => {
