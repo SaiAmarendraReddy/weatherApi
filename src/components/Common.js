@@ -1,3 +1,4 @@
+import { keys, setIsUserLogin, setUserData } from "../reduxStore/reducers/LoginReducer"
 import { setCurrentWeather, setHourslyAndDaily } from "../reduxStore/reducers/WeatherReducer"
 import { store } from "../reduxStore/Store"
 
@@ -21,10 +22,10 @@ export const getHourlyAndDaily = async () => {
         const apiCall = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=14.1606175&lon=79.7775407&appid=${APIKEY}&units=metric`)
         const data = await apiCall.json()
         // hourly
-        console.log("hourly", data.hourly,data)
+        console.log("hourly", data.hourly, data)
         //daily
         console.log("daily", data.daily)
-        store.dispatch(setHourslyAndDaily({ daily: data.daily.slice(1,6), hourly: data.hourly }))
+        store.dispatch(setHourslyAndDaily({ daily: data.daily.slice(1, 6), hourly: data.hourly }))
     } catch (error) {
         console.log("hourly , daily Api call error ", error)
     }
@@ -88,4 +89,25 @@ export const timeStampToDDM = (timeStamp) => {
     let data = `${Days[tmp.getDay()]}, ${tmp.getDate()} ${tmp.toDateString().substring(3, 7)}`
 
     return data
+}
+
+// get data from localstorage
+export const getDataFromLocalStorage = (navigate) => {
+    const userLogin = window.localStorage.getItem(keys.loggedKey)
+    const user = window.localStorage.getItem(keys.detailsKey)
+    // console.log(userLogin, user)
+    if (userLogin != null) {
+        const userlog = JSON.parse(userLogin)
+        store.dispatch(setIsUserLogin(userlog.isUserLogin))
+        navigate("/home")
+    }
+    if(user !== null) {
+        const usrdetails = JSON.parse(user)
+        store.dispatch(setUserData(usrdetails.userData))
+    }
+}
+
+// store data in localstorage
+export const dataToLocalStorage = (key, data) => {
+    window.localStorage.setItem(key, JSON.stringify(data))
 }

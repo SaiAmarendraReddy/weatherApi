@@ -3,45 +3,41 @@ import { Stack, TextField, Button, Container, Typography } from "@mui/material"
 import { LoginStyles } from "./LoginStyles.styles";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux'
-import { setIsUserLogin, setUserData } from "../../reduxStore/reducers/LoginReducer";
+import { keys, setIsUserLogin, setUserData } from "../../reduxStore/reducers/LoginReducer";
+import { useSelector } from 'react-redux'
+import { getDataFromLocalStorage } from "../Common";
 
 const Login = () => {
     const
         classes = LoginStyles(),
+        emailStore = useSelector(state => state.loginStore.userData.email),
+        passwordStore = useSelector(state => state.loginStore.userData.password),
         [email, setEmail] = useState(""),
         [password, setPassword] = useState(""),
         navigate = useNavigate(),
         dispatch = useDispatch(),
+        [isEmailPasswordMatch, setIsEmailPasswordMatch] = useState(true),
         [loginButtonDisable, setLoginButtonDisale] = useState(true);
 
     // check data is present in store or not
     useEffect(() => {
-        let data = window.localStorage.getItem("bitCotData")
-        if (data != null) {
-            const convertData = JSON.parse(data)
-            // if isUserLogin , property present or not
-            if (convertData.hasOwnProperty("isUserLogin")) {
-                // if value true
-                if (convertData.isUserLogin) {
-                    // dispatch data to store
-                    dispatch(setIsUserLogin(convertData.isUserLogin))
-                    // userData
-                    dispatch(setUserData(convertData.userData))
-                    // navigate to home
-                    navigate("/home", { replace: true })
-                }
-            }
-            console.log("data ", convertData)
-        }
-        
-    }, [])
+       getDataFromLocalStorage(navigate)
+    },[])
 
     useEffect(() => {
         const isEmpty = (email !== "" && password !== "")
         // if text fields not empty
         if (isEmpty) {
-            // enable login button
-            setLoginButtonDisale(false)
+            const isMatch = (email === emailStore && password === passwordStore)
+            if (isMatch) {
+                setIsEmailPasswordMatch(false)
+                // enable login button
+                setLoginButtonDisale(false)
+
+            }
+            else {
+                setIsEmailPasswordMatch(true)
+            }
         }
         else {
             // disable login button
@@ -88,6 +84,7 @@ const Login = () => {
                     onChange={(event) => { setPassword(event.target.value) }}
                     className={classes.textField}
                 />
+                {isEmailPasswordMatch ? <h6 style={{ color: "red", fontSize: "15px" }}>Invalid credentials, create new account</h6> : null}
                 {/* Login button */}
                 <Button
                     variant="contained"

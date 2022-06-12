@@ -57,7 +57,7 @@ const Weather = () => {
     // when user click refresh button
     // get the data from server
     const onRefreshHandler = () => {
-        setHoursOrSeven("")
+        // setHoursOrSeven("")
         getWeatherData()
         getHourlyAndDaily()
     }

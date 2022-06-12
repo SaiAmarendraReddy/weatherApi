@@ -19,11 +19,14 @@ const Signup = () => {
         [password, setPassword] = useState(""),
         [confirmPassword, setConfirmPassword] = useState(""),
         [isSignupDisabled, setIsSignupDisabled] = useState(true),
+        [isPasswordMatch, setIsPasswordMatch] = useState(false),
+        [emailError, setEmailError] = useState(false),
         dispatch = useDispatch(),
         navigate = useNavigate();
 
     useEffect(() => {
-        const isNotEmpty = (firstName !== "" && email !== "" && password !== "" && gender !== "" && dob !== "" && country !== "")
+        const isNotEmpty = (firstName !== "" && email !== "" && password !== "" && gender !== "" &&
+            dob !== "" && country !== "" && isPasswordMatch && !emailError)
         if (isNotEmpty) {
             setIsSignupDisabled(false)
         }
@@ -33,8 +36,24 @@ const Signup = () => {
     }, [[firstName, email, password, gender, dob, country]])
 
     useEffect(() => {
+        let regex = new RegExp(/^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z](2,8))?$/);
+        if (regex.test(email)) {
+            setEmailError(false)
+        }
+        else {
+            setEmailError(true)
+        }
+    }, [email])
 
-    }, [])
+    // password match or not
+    useEffect(() => {
+        if (password == confirmPassword) {
+            setIsPasswordMatch(true)
+        }
+        else {
+            setIsPasswordMatch(false)
+        }
+    }, [confirmPassword, password])
 
     // all fields should present
 
@@ -59,10 +78,9 @@ const Signup = () => {
             gender,
             dob,
             country,
-            age: (parseInt(new Date().getFullYear()) - parseInt(dob.split("-")[0]))
+            age: (parseInt(new Date().getFullYear()) - parseInt(dob.substring(0, 4)))
         }
         dispatch(setUserData(data))
-        
     }
 
     //clear all fiels
@@ -119,6 +137,8 @@ const Signup = () => {
                     <TextField
                         placeholder="Email *"
                         required
+                        error={emailError}
+                        helperText={emailError ? "enter valid email address" : null}
                         value={email}
                         sx={{ width: "500px" }}
                         onChange={(e) => { setEmail(e.target.value) }}
@@ -144,8 +164,10 @@ const Signup = () => {
                     <TextField
                         type={"password"}
                         placeholder={"Confirm Password *"}
+                        error={!isPasswordMatch}
                         required
                         value={confirmPassword}
+                        helperText={!isPasswordMatch ? "password doesn't match" : null}
                         onChange={(e) => { setConfirmPassword(e.target.value) }}
                     />
                 </Stack>
@@ -200,6 +222,8 @@ const Signup = () => {
                         </Select>
                     </FormControl>
                 </Stack>
+                {/* message */}
+                <Typography variant="caption" color={"red"}>The (*) symbol fields are manditory</Typography>
                 {/* Signup button */}
                 <Button
                     variant="contained"

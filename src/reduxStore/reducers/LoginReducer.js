@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit"
 
+//export localstorage keys
+export const keys = {
+    loggedKey: "bitCotUserLogged",
+    detailsKey: "bitCotUserDetails"
+}
+
 // initial values
 const initialValues = {
     isUserLogin: false,
@@ -24,13 +30,9 @@ export const loginReducer = createSlice({
         // change the state of isUserLogin or not
         setIsUserLogin: (state, action) => {
             state.isUserLogin = action.payload
-            console.log("storeee ", state.userData)
             // store data in localstore
             // isUserLogin: state.isUserLogin,
-            // let data = JSON.parse(window.localStorage.getItem("bitCotData"))
-            // data.isUserLogin = state.isUserLogin
-            // // store data in localstore
-            // window.localStorage.setItem("bitCotData", JSON.stringify(data))
+            window.localStorage.setItem(keys.loggedKey,JSON.stringify({isUserLogin: state.isUserLogin }))
         },
         // store the user data
         setUserData: (state, action) => {
@@ -55,12 +57,13 @@ export const loginReducer = createSlice({
             state.userData.country = action.payload.country
 
             // store data in localstore
-            window.localStorage.setItem("bitCotData", JSON.stringify({ userData: state.userData }))
+            window.localStorage.setItem(keys.detailsKey, JSON.stringify({ userData: state.userData }))
         },
 
         // when user click logout clear the storage
         clearStorage: (state, action) => {
-            window.localStorage.removeItem("bitCotData")
+            window.localStorage.removeItem(keys.detailsKey)
+            window.localStorage.removeItem(keys.loggedKey)
         }
     }
 })
