@@ -33,11 +33,6 @@ const Home = () => {
         navigate("/", { replace: true })
     }
 
-    // when user click check weather button
-    const weatherClick = () => {
-        navigate("weather")
-    }
-
     return (
         <Container sx={{ padding: 3 }}>
             {
@@ -73,7 +68,12 @@ const Home = () => {
                     {/* LogOut Button */}
                     <Button variant="outlined"
                         sx={{
-                            borderColor: "red", color: 'red', textTransform: "capitalize"
+                            borderColor: "red", color: 'red', textTransform: "capitalize",
+                            '&:hover': {
+                                borderColor: 'red',
+                                backgroundColor: "#ebb6b6",
+                                color: "#f10000"
+                            }
                         }}
                         onClick={onLogoutHandler}
                     >
@@ -82,18 +82,10 @@ const Home = () => {
                         Logout
                     </Button>
                     {/* Check weather button*/}
-                    {/* <Button
-                    variant="contained"
-                    sx={{ backgroundColor: "#0de5db", color: "black", textTransform: "capitalize" }}
-                    onClick={weatherClick}
-                >
-                    <ThunderstormIcon />
-                    Check Weather
-                </Button> */}
                     <Link
                         id="weather"
                         to={"weather"}
-                        onClick={()=>{dispatch(setWeatherComponent(true))}}
+                        onClick={() => { dispatch(setWeatherComponent(true)) }}
                         style={{
                             backgroundColor: "#0de5db",
                             color: "black",
@@ -101,7 +93,7 @@ const Home = () => {
                             textDecoration: "none",
                             display: "inline-flex",
                             padding: "4px",
-                            width: "150px",
+                            width: "500px",
                             justifyContent: "center",
                             alignItems: "center",
                             borderRadius: "4px",

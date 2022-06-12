@@ -17,7 +17,7 @@ const HoursForeCast = (props) => {
         >
             <Typography variant="h4">24 Hours Forecast</Typography>
             {/* data display */}
-            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent:'center', alignItems:'center' }}>
                 {data.map((value) => <HoursForeCastData
                     key={value.dt}
                     time={`${convertTimeStamp(value.dt)}`}
