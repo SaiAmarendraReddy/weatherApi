@@ -21,23 +21,16 @@ const Login = () => {
 
     // check data is present in store or not
     useEffect(() => {
-       getDataFromLocalStorage(navigate)
-    },[])
+        getDataFromLocalStorage(navigate)
+    }, [])
 
     useEffect(() => {
         const isEmpty = (email !== "" && password !== "")
         // if text fields not empty
-        if (isEmpty) {
-            const isMatch = (email === emailStore && password === passwordStore)
-            if (isMatch) {
-                setIsEmailPasswordMatch(false)
-                // enable login button
-                setLoginButtonDisale(false)
 
-            }
-            else {
-                setIsEmailPasswordMatch(true)
-            }
+        if (isEmpty) {
+            // enable login button
+            setLoginButtonDisale(false)
         }
         else {
             // disable login button
@@ -52,10 +45,18 @@ const Login = () => {
     }
 
     // when use click login button navigate to Home screen
+    // 
     const onLoginHandler = () => {
-        // set islogin
-        dispatch(setIsUserLogin(true))
-        navigate("/home")
+        const isMatch = (email === emailStore && password === passwordStore)
+        if (isMatch) {
+            setIsEmailPasswordMatch(true)
+            // set islogin
+            dispatch(setIsUserLogin(true))
+            navigate("/home")
+        }
+        else {
+            setIsEmailPasswordMatch(false)
+        }
     }
 
     return (
@@ -84,7 +85,7 @@ const Login = () => {
                     onChange={(event) => { setPassword(event.target.value) }}
                     className={classes.textField}
                 />
-                {isEmailPasswordMatch ? <h6 style={{ color: "red", fontSize: "15px" }}>Invalid credentials, create new account</h6> : null}
+                {!isEmailPasswordMatch ? <h6 style={{ color: "red", fontSize: "15px" }}>Invalid credentials, create new account</h6> : null}
                 {/* Login button */}
                 <Button
                     variant="contained"

@@ -19,8 +19,9 @@ const Signup = () => {
         [password, setPassword] = useState(""),
         [confirmPassword, setConfirmPassword] = useState(""),
         [isSignupDisabled, setIsSignupDisabled] = useState(true),
-        [isPasswordMatch, setIsPasswordMatch] = useState(false),
+        [isPasswordMatch, setIsPasswordMatch] = useState(true),
         [emailError, setEmailError] = useState(false),
+        [passwordError, setPasswordError] = useState(false),
         dispatch = useDispatch(),
         navigate = useNavigate();
 
@@ -33,9 +34,10 @@ const Signup = () => {
         else {
             setIsSignupDisabled(true)
         }
-    }, [[firstName, email, password, gender, dob, country]])
+    }, [[firstName, email, password, gender, dob, country, isPasswordMatch, emailError]])
 
-    useEffect(() => {
+    // validate email id
+    const validateEmailId = () => {
         let regex = new RegExp(/^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z](2,8))?$/);
         if (regex.test(email)) {
             setEmailError(false)
@@ -43,17 +45,28 @@ const Signup = () => {
         else {
             setEmailError(true)
         }
-    }, [email])
+    }
+
+    // validate password
+    const passwordValidate = () => {
+        let regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+        if (regex.test(password)) {
+            setPasswordError(false)
+        }
+        else {
+            setPasswordError(true)
+        }
+    }
 
     // password match or not
-    useEffect(() => {
-        if (password == confirmPassword) {
+    const checkPasswordMatch = () => {
+        if (password === confirmPassword) {
             setIsPasswordMatch(true)
         }
         else {
             setIsPasswordMatch(false)
         }
-    }, [confirmPassword, password])
+    }
 
     // all fields should present
 
@@ -138,10 +151,11 @@ const Signup = () => {
                         placeholder="Email *"
                         required
                         error={emailError}
-                        helperText={emailError ? "enter valid email address" : null}
+                        helperText={emailError ? "enter valid email address eg:- example@gmail.com, example@yahoo.com" : null}
                         value={email}
                         sx={{ width: "500px" }}
                         onChange={(e) => { setEmail(e.target.value) }}
+                        onBlur={validateEmailId}
                     />
                 </Box>
 
@@ -159,6 +173,11 @@ const Signup = () => {
                         required
                         onChange={(e) => { setPassword(e.target.value) }}
                         value={password}
+                        error={passwordError}
+                        helperText={passwordError ?
+                            `password must be a minimum of 8 characters including number, Upper, Lower And 
+                            one special character` : null}
+                        onBlur={passwordValidate}
                     />
                     {/* Confirm password */}
                     <TextField
@@ -169,6 +188,7 @@ const Signup = () => {
                         value={confirmPassword}
                         helperText={!isPasswordMatch ? "password doesn't match" : null}
                         onChange={(e) => { setConfirmPassword(e.target.value) }}
+                        onBlur={checkPasswordMatch}
                     />
                 </Stack>
 
@@ -206,7 +226,7 @@ const Signup = () => {
                         }}
                         required
                         value={dob}
-                        onChange={(e) => { setDob(e.target.value) }}
+                        onChange={(e) => { console.log(e.target.value); setDob(e.target.value) }}
                     />
                     {/* country */}
                     <FormControl sx={{ width: "max-content" }}>
