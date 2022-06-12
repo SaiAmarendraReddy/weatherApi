@@ -16,6 +16,8 @@ const Login = () => {
         [password, setPassword] = useState(""),
         navigate = useNavigate(),
         dispatch = useDispatch(),
+        [emailInvalid, setEmailInvalid] = useState(false),
+        [passwordInvalid, setPasswordInvalid] = useState(false),
         [isEmailPasswordMatch, setIsEmailPasswordMatch] = useState(true),
         [loginButtonDisable, setLoginButtonDisale] = useState(true);
 
@@ -48,11 +50,30 @@ const Login = () => {
     // 
     const onLoginHandler = () => {
         const isMatch = (email === emailStore && password === passwordStore)
+        // if email & password match
         if (isMatch) {
             setIsEmailPasswordMatch(true)
             // set islogin
             dispatch(setIsUserLogin(true))
             navigate("/home")
+        }
+        // if there is 
+        else if (emailStore !== "" && passwordStore !== "") {
+            // if email not match
+            if (email !== emailStore) {
+                setEmailInvalid(true)
+            }
+            else {
+                setEmailInvalid(false)
+            }
+
+            // if password not match
+            if (password !== passwordStore) {
+                setPasswordInvalid(true)
+            }
+            else {
+                setPasswordInvalid(false)
+            }
         }
         else {
             setIsEmailPasswordMatch(false)
@@ -76,6 +97,8 @@ const Login = () => {
                     value={email}
                     onChange={(event) => { setEmail(event.target.value) }}
                     className={classes.textField}
+                    error={emailInvalid}
+                    helperText={emailInvalid ? "Invalid emailID" : null}
                 />
                 {/* password text field */}
                 <TextField
@@ -84,6 +107,8 @@ const Login = () => {
                     value={password}
                     onChange={(event) => { setPassword(event.target.value) }}
                     className={classes.textField}
+                    error={passwordInvalid}
+                    helperText={passwordInvalid ? "Invalid password" : null}
                 />
                 {!isEmailPasswordMatch ? <h6 style={{ color: "red", fontSize: "15px" }}>Invalid credentials, create new account</h6> : null}
                 {/* Login button */}

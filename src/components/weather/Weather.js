@@ -16,7 +16,8 @@ import ReUsableButton from "./ReUsableButton";
 import ReUsableIconButton from "./ReusableIconButton";
 import { Navigate, useNavigate } from "react-router-dom";
 import { convertTimeStamp, fahrenheitToCelsius, getHourlyAndDaily, getWeatherData, timeStampToDDM } from "../Common";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setWeatherComponent } from "../../reduxStore/reducers/WeatherReducer";
 
 const constants = {
     SEVEN: "SEVEN",
@@ -27,6 +28,7 @@ const constants = {
 const Weather = () => {
     const
         navigate = useNavigate(),
+        dispatch = useDispatch(),
         presentWeatherData = useSelector(state => state.weatherStore.current),
         hourlyData = useSelector(state => state.weatherStore.hourly),
         dailyData = useSelector(state => state.weatherStore.daily),
@@ -41,7 +43,8 @@ const Weather = () => {
     // navigate to /home
     const onHomeButtonHandle = () => {
         setHoursOrSeven(constants.EMPTY)
-        navigate("/home")
+        dispatch(setWeatherComponent(false))
+        navigate("/home", { replace: true })
     }
 
     // when user click

@@ -4,7 +4,8 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialValues = {
     daily: [],
     hourly: [],
-    current: null
+    current: null,
+    weatherCompentRender: false
 }
 
 export const weatherReducer = createSlice({
@@ -19,10 +20,13 @@ export const weatherReducer = createSlice({
         setHourslyAndDaily: (state, action) => {
             state.daily = action.payload.daily
             state.hourly = action.payload.hourly
+        },
+        setWeatherComponent: (state, action) => {
+            state.weatherCompentRender = action.payload
         }
     }
 })
 
-export const { setCurrentWeather, setHourslyAndDaily } = weatherReducer.actions
+export const { setCurrentWeather, setHourslyAndDaily, setWeatherComponent } = weatherReducer.actions
 
 export default weatherReducer.reducer
